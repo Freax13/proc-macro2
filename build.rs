@@ -73,8 +73,7 @@ fn main() {
         println!("cargo:rustc-cfg=hygiene");
     }
 
-    let target = env::var("TARGET").unwrap();
-    if !enable_use_proc_macro(&target) {
+    if cfg!(feature = "proc-macro") {
         return;
     }
 
@@ -91,16 +90,6 @@ fn main() {
     if semver_exempt && version.nightly {
         println!("cargo:rustc-cfg=super_unstable");
     }
-}
-
-fn enable_use_proc_macro(target: &str) -> bool {
-    // wasm targets don't have the `proc_macro` crate, disable this feature.
-    if target.contains("wasm32") {
-        return false;
-    }
-
-    // Otherwise, only enable it if our feature is actually enabled.
-    cfg!(feature = "proc-macro")
 }
 
 struct RustcVersion {
