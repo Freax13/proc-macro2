@@ -34,9 +34,11 @@
 //     "span-locations" Cargo cfg. This is behind a cfg because tracking
 //     location inside spans is a performance hit.
 
-use std::env;
-use std::process::{self, Command};
-use std::str;
+use std::{
+    env,
+    process::{self, Command},
+    str,
+};
 
 fn main() {
     println!("cargo:rerun-if-changed=build.rs");
@@ -73,7 +75,7 @@ fn main() {
         println!("cargo:rustc-cfg=hygiene");
     }
 
-    if cfg!(feature = "proc-macro") {
+    if !cfg!(feature = "proc-macro") {
         return;
     }
 
